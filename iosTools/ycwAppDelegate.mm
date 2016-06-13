@@ -1,0 +1,369 @@
+//
+//  ycwAppDelegate.m
+//  iosTools
+//
+//  Created by YangCW on 16-6-2.
+//  Copyright (c) 2016年 ycw. All rights reserved.
+//
+
+#import "ycwAppDelegate.h"
+#import "deviceinfo.h"
+#import "AppWindowCtrl.h"
+
+@implementation ycwAppDelegate
+
+- (void)dealloc
+{
+    [super dealloc];
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    // Insert code here to initialize your application
+    
+    if (deviceDeleget_==NULL)
+        deviceDeleget_= new MyDeviceDeleget(self);
+    startListenDevice(deviceDeleget_);
+    
+}
+
+-(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender{
+    return YES;
+}
+
+
+-(void)deviceConnected:(mg_ios::IOSDevice*)device
+{
+    
+    bool bAttachRet = device->attach();
+    if (!bAttachRet)
+    {
+        return;
+    }
+    
+    [self showiOSDeviceInfo:device];
+    
+    currentDevice = device;
+
+
+}
+
+-(void)deviceDisConnected:(mg_ios::IOSDevice*)device
+{
+    [_lblDeviceName setStringValue:@""];
+    [_lbliOSVersion setStringValue:@""];
+    [_lblDeviceUDID setStringValue:@""];
+    currentDevice = nil;
+}
+
+
+-(void)showiOSDeviceInfo:(mg_ios::IOSDevice*)device{
+    BasicDeviceInfo info = device->basicDeviceInfo();
+    [_lblDeviceName setStringValue:[NSString stringWithUTF8String:info.DeviceName.c_str()]];
+    [_lbliOSVersion setStringValue:[NSString stringWithUTF8String:info.ProductVersion.c_str()]];
+    [_lblDeviceUDID setStringValue:[NSString stringWithUTF8String:info.UniqueDeviceID.c_str()]];
+    _Uiid = [_lblDeviceUDID stringValue];
+    NSLog(@"\n%@\n",[NSString stringWithUTF8String:info.UniqueDeviceID.c_str()]);
+}
+
+#pragma mark - 按钮事件
+- (IBAction)clickListApps:(id)sender {
+    CFDictionaryRef dictRef = currentDevice->getAppLists();
+    NSDictionary *dict = (NSDictionary *)dictRef;
+
+    AppWindowCtrl *appwin = [[AppWindowCtrl alloc]initWithDict:dict];
+    [appwin showSelf];
+}
+
+- (IBAction)clickBackup:(id)sender {
+    //调用备份进程
+    NSString *savePath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"Backup/"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:savePath]) {
+        [fm createDirectoryAtPath:savePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSArray  *argumArray = [NSArray arrayWithObjects: @"-b", @"--target", _Uiid, @"-q",savePath, nil];
+    int retCode = [self execBackup:argumArray];
+}
+
+- (IBAction)clickCopyFile:(id)sender {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *strPhotoLibraryPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/"];
+    if ([fm fileExistsAtPath:strPhotoLibraryPath]) {
+        [fm removeItemAtPath:strPhotoLibraryPath error:nil];
+    }
+    NSString *localPhotoDataPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/PhotoData/"];
+    [fm createDirectoryAtPath:localPhotoDataPath withIntermediateDirectories:YES attributes:nil error:nil];
+    NSString *photoDataPath = @"/PhotoData/";
+    delete fileManager_;fileManager_=NULL;
+    [self openAFCService:currentDevice];
+    if (fileManager_ && (fileManager_->isServiceOk()))
+    {
+        [self getDirFromDevice:localPhotoDataPath srcPath:photoDataPath];
+    }
+    
+     NSString *localPhotoPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/Photos/"];
+    [fm createDirectoryAtPath:localPhotoPath withIntermediateDirectories:YES attributes:nil error:nil];
+    NSString *photoPath = @"/Photos/";
+    delete fileManager_;fileManager_=NULL;
+    [self openAFCService:currentDevice];
+    if (fileManager_ && (fileManager_->isServiceOk()))
+    {
+        [self getDirFromDevice:localPhotoPath srcPath:photoPath];
+    }
+
+
+    
+}
+
+- (IBAction)clickDemo:(id)sender {
+    if ([[_lblDemoPath stringValue] length] <= 0) {
+        return;
+    }
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:[_lblDemoPath stringValue]];
+
+    am_device *DevicePtr = currentDevice->amdevice();
+        
+    NSString *ptrDev = [NSString stringWithFormat:@"%d",(int)DevicePtr];
+     NSArray  *argumArray = [NSArray arrayWithObjects:ptrDev,[_lbliOSVersion stringValue],[NSString stringWithFormat:@"%@%@",localBakcupPath,@"Backup/"],[NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/"],@"1000",@"/Volumes/public/workspace/new_MT/Src/Source/Foundation/Others/DR_SafeEraser/se help files/cmd--ClearPart.plist",nil];
+    [task setArguments:argumArray];
+    
+    NSPipe *b_pipe = [[NSPipe alloc] init];
+    [task setStandardError:b_pipe];
+    
+    [task launch];
+    [task waitUntilExit];
+    
+    int code = [task terminationStatus];
+}
+
+#pragma mark - 备份
+
+- (NSString*)getAppPath
+{
+    //从系统目录中找
+    NSString* strapp = nil;
+    NSString* tStrHelpAppPath = @"/System/Library/PrivateFrameworks/MobileDevice.framework/Versions/A/AppleMobileDeviceHelper.app";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:tStrHelpAppPath]) {
+        strapp = [NSString stringWithFormat:@"%@/Contents/Resources/AppleMobileBackup",tStrHelpAppPath];
+    }else {
+        NSString* resourcePath = [[NSBundle mainBundle] resourcePath];
+        strapp = [NSString stringWithFormat:@"%@/AppleMobileBackup",resourcePath];
+    }
+    return strapp;
+}
+
+- (int)execBackup:(NSArray *)argumArray
+{
+    NSLog(@"exec Backup task");
+    
+    int retCode = BU_Successful;
+    
+    backupTask_ = [[[NSTask alloc] init] autorelease];
+    [backupTask_ setLaunchPath:[self getAppPath]];
+    [backupTask_ setArguments:argumArray];
+    
+    NSPipe  *b_pipe = [[NSPipe alloc] init];
+    [backupTask_ setStandardError:b_pipe];
+    
+    [backupTask_ launch];
+    
+    [backupTask_ waitUntilExit];
+    
+    taskState = [backupTask_ terminationStatus];
+    if(taskState == 0)
+    {
+        NSLog(@"Task succeeded.");
+        retCode = BU_Successful;
+    }
+    else
+    {
+        NSLog(@"[BackupDeviceBll] : threadExeBody Task backup failed.");
+        NSLog(@"Backup Argum:%@,%@",_Uiid,[argumArray lastObject]);
+        retCode = BU_UnknownError;
+        
+        NSFileHandle *readHander = [b_pipe fileHandleForReading];
+        NSData  *readData =[readHander readDataToEndOfFile];
+        NSString *errorcodeString = [[[NSMutableString alloc] initWithData:readData encoding:NSUTF8StringEncoding] autorelease];
+        NSLog(@"%@", errorcodeString);
+        
+
+            //restore错误码
+            int restoreIndex = [errorcodeString rangeOfString:@"Restore error:"].location;
+            if (restoreIndex != NSNotFound)  //restore
+            {
+                NSString *errorMsg = @"Restore error:";
+                int errorCodeIndex = restoreIndex + [errorMsg length];
+                errorcodeString = [errorcodeString substringFromIndex:errorCodeIndex];
+                errorcodeString = [errorcodeString stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+                errorcodeString = [errorcodeString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                
+                if (nil!=errorcodeString)
+                {
+                    if ([errorcodeString isEqualToString:@"-37"] == YES)
+                    {
+                        NSLog(@"need to find my iphone  \n");
+                        retCode = BU_NEEDCLOSEFINDMYIPHONE;
+                    }
+                    else if ([errorcodeString isEqualToString:@"-36"] == YES)
+                    {
+                        NSLog(@"Insufficient space\n");
+                        retCode = BU_InsufficientSpace;
+                    }
+                    else if ([errorcodeString isEqualToString:@"-2"] == YES)
+                    {
+                        NSLog(@"BU_ConnectFailed %s\n", [errorcodeString UTF8String]);
+                        retCode = BU_ConnectFailed;
+                    }
+                    else if ([errorcodeString isEqualToString:@"-10"] == YES)
+                    {
+                        NSLog(@"BU_DeviceLost   ======    %s\n", [errorcodeString UTF8String]);
+                        retCode = BU_DeviceLost;
+                    }
+                    else if ([errorcodeString isEqualToString:@"-35"] == YES) {
+                        NSLog(@"BU_Devicelock   ======    %s\n", [errorcodeString UTF8String]);
+                        retCode = BU_PassWord;
+                    }
+                    else
+                    {
+                        NSLog(@"%@",errorcodeString);
+                    }
+                }
+            }
+            else
+            {
+                int bindex = [errorcodeString rangeOfString:@"Backup error:"].location;
+                
+                if([errorcodeString rangeOfString:@"SocketStreamHandlerConnect: Can't connect to host:"].location != NSNotFound)
+                {
+                    retCode = BU_PassWord;
+                }
+                
+                //取错误码
+                else if (bindex != NSNotFound)
+                {
+                    NSString *errorMsg = @"Backup error:";
+                    int errorCodeIndex = bindex + [errorMsg length];
+                    errorcodeString = [errorcodeString substringFromIndex:errorCodeIndex];
+                    errorcodeString = [errorcodeString stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+                    errorcodeString = [errorcodeString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                    
+                    if (nil!=errorcodeString  )
+                    {
+                        if ([errorcodeString isEqualToString:@"-36"] == YES)
+                        {
+                            NSLog(@"Insufficient space\n");
+                            retCode = BU_InsufficientSpace;
+                        }
+                        else if ([errorcodeString isEqualToString:@"-2"] == YES)
+                        {
+                            NSLog(@"BU_ConnectFailed %s\n", [errorcodeString UTF8String]);
+                            retCode = BU_ConnectFailed;
+                        }
+                        else if ([errorcodeString isEqualToString:@"-10"] == YES)
+                        {
+                            NSLog(@"BU_DeviceLost   ======    %s\n", [errorcodeString UTF8String]);
+                            retCode = BU_DeviceLost;
+                        }
+                        else if ([errorcodeString isEqualToString:@"-35"] == YES) {
+                            NSLog(@"BU_Devicelock   ======    %s\n", [errorcodeString UTF8String]);
+                            retCode = BU_PassWord;
+                        }
+                        else {
+                            NSLog(@"%@",errorcodeString);
+                        }
+                    }
+                }
+                else if([errorcodeString rangeOfString:@"from lockdown"].location != NSNotFound)
+                {
+                    NSLog(@"BU_Devicelock   ======    %s\n", [errorcodeString UTF8String]);
+                    retCode = BU_PassWord;
+                }else if([errorcodeString rangeOfString:@"ERROR: Password change"].location != NSNotFound)
+                {
+                    NSLog(@"BU_ITunesSetPassWord   ======    %s\n", [errorcodeString UTF8String]);
+                    retCode = BU_ITunesSetPassword;
+                }
+                else
+                {
+                    NSLog(@"%@",errorcodeString);
+                }
+            }
+        }
+    
+    [b_pipe release];
+    backupTask_ = nil;
+    return retCode;
+}
+
+#pragma mark - 拷贝文件到PC
+
+- (void)openAFCService:(mg_ios::IOSDevice*)device
+{
+    if (device == NULL) {
+        return ;
+    }
+    
+    if (device->deviceConnect()) {
+        if (device->startSession()) {
+            
+            //创建文件对象
+            fileSerice_ = new mg_ios::DeviceService(device);
+            fileManager_ = new mg_ios::FileManager(fileSerice_);
+            
+            device->stopSession();
+        }
+        device->disDeviceConnect();
+    }
+}
+
+- (BOOL)getFileFromDevice:(NSString*)localPath  path:(NSString *)strDevicePath
+{
+//    delete fileManager_;fileManager_=NULL;
+//    [self openAFCService:currentDevice];
+//    if (fileManager_ && (fileManager_->isServiceOk()))
+//    {
+        NSString* dstPath = localPath;
+        NSString* srcPath = strDevicePath;
+        
+        if(0 == fileManager_->readFile([dstPath UTF8String],[srcPath UTF8String]))
+        {
+            NSLog(@"拷贝成功!");
+        }
+        else{
+            return NO;
+        }
+//    }
+    return YES;
+}
+
+-(BOOL)getDirFromDevice:(NSString*)dstPath srcPath:(NSString*)strDevicePath
+{
+        vector<string>fileLists = fileManager_->readDir([strDevicePath UTF8String]);
+        for (int i = 0; i < fileLists.size(); i++){
+            NSMutableString *destFile = [NSMutableString stringWithString:dstPath];
+            NSMutableString *srcFile = [NSMutableString stringWithString:strDevicePath];
+            [destFile appendString:[NSString stringWithUTF8String:fileLists[i].c_str()]];
+            [srcFile appendString:[NSString stringWithUTF8String:fileLists[i].c_str()]];
+            CFDictionaryRef dictRef = fileManager_->fileInfo([srcFile UTF8String]);
+            NSDictionary *dict = (NSDictionary *)dictRef;
+//            NSLog(@"%@",dict);
+            if ([[dict objectForKey:@"st_ifmt"] isEqualToString:@"S_IFDIR"]) {
+                [destFile appendString:@"/"];
+                [srcFile appendString:@"/"];
+                NSFileManager *fm = [NSFileManager defaultManager];
+                if (![fm fileExistsAtPath:destFile]) {
+                    [fm createDirectoryAtPath:destFile withIntermediateDirectories:YES attributes:nil error:nil];
+                }
+                [self getDirFromDevice:destFile srcPath:srcFile];
+            }
+            else{
+                [self getFileFromDevice:destFile path:srcFile];
+            }
+        }
+    return YES;
+}
+
+
+
+@end
