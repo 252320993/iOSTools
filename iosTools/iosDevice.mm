@@ -1,5 +1,5 @@
 //
-//  iosDevice.cpp
+//  iosDevice.mm
 //  iosTools
 //
 //  Created by YangCW on 16-6-2.

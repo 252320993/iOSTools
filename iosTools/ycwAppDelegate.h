@@ -48,5 +48,6 @@ typedef enum
 - (IBAction)clickBackup:(id)sender;
 - (IBAction)clickCopyFile:(id)sender;
 - (IBAction)clickDemo:(id)sender;
+- (IBAction)clickClearFile:(id)sender;
 
 @end

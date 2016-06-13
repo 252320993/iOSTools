@@ -1,10 +1,9 @@
-//### WS@M Project:Dr.Fone for iOS (Mac)  ###
 //
 //  MyDeviceDeleget.h
-//  DeviceConnectDemo
+//  iosTools
 //
-//  Created by chanlp on 9/28/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by YangCW on 16-6-2.
+//  Copyright (c) 2016年 ycw. All rights reserved.
 //
 
 #ifndef DeviceConnectDemo_MyDeviceDeleget_h

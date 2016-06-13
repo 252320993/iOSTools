@@ -1,11 +1,11 @@
-//### WS@M Project:Dr.Fone for iOS (Mac)  ###
 //
 //  deviceservice.cpp
-//  mobilego
+//  iosTools
 //
-//  Created by fengxing on 10/13/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by YangCW on 16-6-2.
+//  Copyright (c) 2016年 ycw. All rights reserved.
 //
+
 
 #include <iostream>
 #include "deviceservice.h"

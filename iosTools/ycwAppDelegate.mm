@@ -1,5 +1,5 @@
 //
-//  ycwAppDelegate.m
+//  ycwAppDelegate.mm
 //  iosTools
 //
 //  Created by YangCW on 16-6-2.
@@ -76,44 +76,74 @@
 }
 
 - (IBAction)clickBackup:(id)sender {
-    //调用备份进程
-    NSString *savePath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"Backup/"];
-    NSFileManager *fm = [NSFileManager defaultManager];
-    if (![fm fileExistsAtPath:savePath]) {
-        [fm createDirectoryAtPath:savePath withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    NSArray  *argumArray = [NSArray arrayWithObjects: @"-b", @"--target", _Uiid, @"-q",savePath, nil];
-    int retCode = [self execBackup:argumArray];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        //调用备份进程
+        NSString *savePath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"Backup/"];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if (![fm fileExistsAtPath:savePath]) {
+            [fm createDirectoryAtPath:savePath withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        NSArray  *argumArray = [NSArray arrayWithObjects: @"-b", @"--target", _Uiid, @"-q",savePath, nil];
+        int retCode = [self execBackup:argumArray];
+        if (retCode == 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSAlert *alert = [NSAlert alertWithMessageText:@"Success!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Backup Success, path is %@",savePath];
+                [alert runModal];
+            });
+        }
+        else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSAlert *alert = [NSAlert alertWithMessageText:@"Failed!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Backup Failed!!!"];
+                [alert runModal];
+            });
+        }
+    });
 }
 
 - (IBAction)clickCopyFile:(id)sender {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *strPhotoLibraryPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/"];
-    if ([fm fileExistsAtPath:strPhotoLibraryPath]) {
-        [fm removeItemAtPath:strPhotoLibraryPath error:nil];
-    }
-    NSString *localPhotoDataPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/PhotoData/"];
-    [fm createDirectoryAtPath:localPhotoDataPath withIntermediateDirectories:YES attributes:nil error:nil];
-    NSString *photoDataPath = @"/PhotoData/";
-    delete fileManager_;fileManager_=NULL;
-    [self openAFCService:currentDevice];
-    if (fileManager_ && (fileManager_->isServiceOk()))
-    {
-        [self getDirFromDevice:localPhotoDataPath srcPath:photoDataPath];
-    }
-    
-     NSString *localPhotoPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/Photos/"];
-    [fm createDirectoryAtPath:localPhotoPath withIntermediateDirectories:YES attributes:nil error:nil];
-    NSString *photoPath = @"/Photos/";
-    delete fileManager_;fileManager_=NULL;
-    [self openAFCService:currentDevice];
-    if (fileManager_ && (fileManager_->isServiceOk()))
-    {
-        [self getDirFromDevice:localPhotoPath srcPath:photoPath];
-    }
-
-
-    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *strPhotoLibraryPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/"];
+        if ([fm fileExistsAtPath:strPhotoLibraryPath]) {
+            [fm removeItemAtPath:strPhotoLibraryPath error:nil];
+        }
+        NSString *localPhotoDataPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/PhotoData/"];
+        [fm createDirectoryAtPath:localPhotoDataPath withIntermediateDirectories:YES attributes:nil error:nil];
+        NSString *photoDataPath = @"/PhotoData/";
+        delete fileManager_;fileManager_=NULL;
+        [self openAFCService:currentDevice];
+        if (fileManager_ && (fileManager_->isServiceOk()))
+        {
+            [self getDirFromDevice:localPhotoDataPath srcPath:photoDataPath];
+        }
+        
+        NSString *localPhotoPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"PhotoLibrary/Photos/"];
+        [fm createDirectoryAtPath:localPhotoPath withIntermediateDirectories:YES attributes:nil error:nil];
+        NSString *photoPath = @"/Photos/";
+        delete fileManager_;fileManager_=NULL;
+        [self openAFCService:currentDevice];
+        BOOL retcode = NO;
+        if (fileManager_ && (fileManager_->isServiceOk()))
+        {
+            retcode = [self getDirFromDevice:localPhotoPath srcPath:photoPath];
+        }
+        else{
+            retcode = NO;
+        }
+        
+        if (retcode) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSAlert *alert = [NSAlert alertWithMessageText:@"Success" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Copy PhotoLibrary Success, path is %@",strPhotoLibraryPath];
+                [alert runModal];
+            });
+        }
+        else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSAlert *alert = [NSAlert alertWithMessageText:@"Failed!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Copy Failed!!!"];
+                [alert runModal];
+            });
+        }
+    });
 }
 
 - (IBAction)clickDemo:(id)sender {
@@ -136,6 +166,36 @@
     [task waitUntilExit];
     
     int code = [task terminationStatus];
+}
+
+- (IBAction)clickClearFile:(id)sender {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSFileManager *fm = [NSFileManager defaultManager];
+        BOOL ret = NO;
+        if ([fm fileExistsAtPath:localBakcupPath]) {
+            NSError *error = nil;
+            ret = [fm removeItemAtPath:localBakcupPath error:&error];
+            
+            if (ret) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSAlert *alert = [NSAlert alertWithMessageText:@"Success!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Delete Success!!!"];
+                    [alert runModal];
+                });
+            }
+            else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSAlert *alert = [NSAlert alertWithMessageText:@"Failed!!!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@",error.description];
+                    [alert runModal];
+                });
+            }
+        }
+        else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSAlert *alert = [NSAlert alertWithMessageText:@"Alert!!!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"File No Exits"];
+                [alert runModal];
+            });
+        }
+    });
 }
 
 #pragma mark - 备份
@@ -319,26 +379,23 @@
 
 - (BOOL)getFileFromDevice:(NSString*)localPath  path:(NSString *)strDevicePath
 {
-//    delete fileManager_;fileManager_=NULL;
-//    [self openAFCService:currentDevice];
-//    if (fileManager_ && (fileManager_->isServiceOk()))
-//    {
+
         NSString* dstPath = localPath;
         NSString* srcPath = strDevicePath;
         
         if(0 == fileManager_->readFile([dstPath UTF8String],[srcPath UTF8String]))
         {
-            NSLog(@"拷贝成功!");
+            NSLog(@"copy success!");
+            return YES;
         }
         else{
             return NO;
         }
-//    }
-    return YES;
 }
 
 -(BOOL)getDirFromDevice:(NSString*)dstPath srcPath:(NSString*)strDevicePath
 {
+    BOOL retcode = YES;
         vector<string>fileLists = fileManager_->readDir([strDevicePath UTF8String]);
         for (int i = 0; i < fileLists.size(); i++){
             NSMutableString *destFile = [NSMutableString stringWithString:dstPath];
@@ -347,7 +404,6 @@
             [srcFile appendString:[NSString stringWithUTF8String:fileLists[i].c_str()]];
             CFDictionaryRef dictRef = fileManager_->fileInfo([srcFile UTF8String]);
             NSDictionary *dict = (NSDictionary *)dictRef;
-//            NSLog(@"%@",dict);
             if ([[dict objectForKey:@"st_ifmt"] isEqualToString:@"S_IFDIR"]) {
                 [destFile appendString:@"/"];
                 [srcFile appendString:@"/"];
@@ -358,10 +414,10 @@
                 [self getDirFromDevice:destFile srcPath:srcFile];
             }
             else{
-                [self getFileFromDevice:destFile path:srcFile];
+              retcode &= [self getFileFromDevice:destFile path:srcFile];
             }
         }
-    return YES;
+    return retcode;
 }
 
 

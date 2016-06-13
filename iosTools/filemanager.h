@@ -1,10 +1,9 @@
-//### WS@M Project:Dr.Fone for iOS (Mac)  ###
 //
 //  filemanager.h
-//  mobilego
+//  iosTools
 //
-//  Created by fengxing on 9/4/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by YangCW on 16-6-2.
+//  Copyright (c) 2016年 ycw. All rights reserved.
 //
 
 #ifndef mobilego_filemanager_h
