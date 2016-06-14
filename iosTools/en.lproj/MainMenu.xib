@@ -11,7 +11,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
                 <menuItem title="iosTools" id="56">
@@ -776,6 +776,32 @@
                             <action selector="clickClearFile:" target="494" id="qqD-d9-WnW"/>
                         </connections>
                     </button>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X1T-fO-8j5">
+                        <rect key="frame" x="82" y="133" width="381" height="22"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="lPH-0L-tHH">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BGC-JM-JUD">
+                        <rect key="frame" x="16" y="136" width="56" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="app路径" id="Ir0-NE-E0O">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1ut-y9-lRm">
+                        <rect key="frame" x="196" y="97" width="89" height="32"/>
+                        <buttonCell key="cell" type="push" title="安装app" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bnr-4D-tLN">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickInstallApp:" target="494" id="eq5-uc-F5d"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="550" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="20" symbolic="YES" id="555"/>
@@ -810,6 +836,7 @@
         </window>
         <customObject id="494" customClass="ycwAppDelegate">
             <connections>
+                <outlet property="_lblAppPath" destination="X1T-fO-8j5" id="ImN-HA-9PJ"/>
                 <outlet property="_lblDemoPath" destination="667" id="684"/>
                 <outlet property="_lblDeviceName" destination="556" id="581"/>
                 <outlet property="_lblDeviceUDID" destination="564" id="583"/>

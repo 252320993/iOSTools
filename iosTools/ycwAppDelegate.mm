@@ -73,6 +73,13 @@
 
     AppWindowCtrl *appwin = [[AppWindowCtrl alloc]initWithDict:dict];
     [appwin showSelf];
+    [appwin release],appwin = nil;
+}
+
+- (IBAction)clickInstallApp:(id)sender {
+    NSString *strPath = [_lblAppPath stringValue];
+    CFStringRef pathRef = (__bridge CFStringRef)strPath;
+    bool result = currentDevice->installApp(pathRef);
 }
 
 - (IBAction)clickBackup:(id)sender {
@@ -165,7 +172,10 @@
     [task launch];
     [task waitUntilExit];
     
-    int code = [task terminationStatus];
+    [task terminationStatus];
+    
+    [b_pipe release],b_pipe = nil;
+    [task release],task = nil;
 }
 
 - (IBAction)clickClearFile:(id)sender {

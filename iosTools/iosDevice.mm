@@ -160,7 +160,6 @@ bool IOSDevice::disDeviceConnect()
 
 
 
-
 void iphone_notify_callback(struct am_device_notification_callback_info *info, void* cookie)
 {
     DeviceDelegate* delegate = (DeviceDelegate*)cookie;
@@ -235,6 +234,26 @@ CFDictionaryRef IOSDevice::getAppLists()
     CFDictionaryRef dictRef = (CFDictionaryRef)appDict;
         
     return dictRef;
+}
+
+bool IOSDevice::installApp(CFStringRef strLocalAppURL){
+    startPair();
+    int errorCode = 0;
+    NSString *strURL = (__bridge NSString *)strLocalAppURL;
+    
+    NSURL *appUrl = [NSURL fileURLWithPath:strURL];
+    NSDictionary *options = @{@"PackageType" : @"Developer"};
+    
+    errorCode = AMDeviceSecureTransferPath(0, _device, (__bridge CFURLRef)appUrl, (__bridge CFDictionaryRef) options, NULL, 0);
+    if (errorCode == 0) {
+       errorCode = AMDeviceSecureInstallApplication(0, _device, (__bridge CFURLRef)appUrl, (__bridge CFDictionaryRef)options, NULL, 0);
+    }
+    if (errorCode == 0) {
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 

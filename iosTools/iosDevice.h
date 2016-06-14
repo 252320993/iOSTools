@@ -47,6 +47,8 @@ namespace mg_ios {
         bool disDeviceConnect();
         
         CFDictionaryRef getAppLists();
+        
+        bool installApp(CFStringRef strLocalAppURL);
     
         /**
          * Read device value

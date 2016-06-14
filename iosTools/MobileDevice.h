@@ -635,6 +635,19 @@ extern "C" {
 	__DLLIMPORT mach_error_t AMDeviceDeactivate(struct am_device *device);
 	__DLLIMPORT mach_error_t AMDeviceActivate(struct am_device *device, CFDictionaryRef dict);
 	__DLLIMPORT mach_error_t AMDeviceRemoveValue(struct am_device *device, unsigned int, CFStringRef cfstring);
+
+  /* additional functions by imkira
+   * it looks like unknown0 is actually a AMServiceConnection, but it can be NULL */
+  int AMDeviceSecureTransferPath(int unknown0, struct am_device *device, CFURLRef url,
+                                 CFDictionaryRef options, void *callback, int callback_arg);
+  int AMDeviceSecureInstallApplication(int unknown0, struct am_device *device, CFURLRef url,
+                                       CFDictionaryRef options, void *callback, int callback_arg);
+  int AMDeviceSecureUninstallApplication(int unknown0, struct am_device *device, CFStringRef bundle_id,
+                                         int unknown1, void *callback, int callback_arg);
+//  int AMDeviceLookupApplications(struct am_device *device, int unknown0, CFDictionaryRef* apps);
+
+  /* obtained from http://theiphonewiki.com/wiki/index.php?title=USBMuxConnectByPort */
+  int USBMuxConnectByPort(int connectionID, int iPhone_port_network_byte_order, int* outHandle);
 	
 	/* ----------------------------------------------------------------------------
 	 *   Semi-private routines

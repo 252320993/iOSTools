@@ -34,6 +34,7 @@ typedef enum
     IBOutlet NSTextField *_lbliOSVersion;
     IBOutlet NSTextField *_lblDeviceUDID;
     IBOutlet NSTextField *_lblDemoPath;
+    IBOutlet NSTextField *_lblAppPath;
 
     mg_ios::IOSDevice* currentDevice;
     NSTask    *backupTask_;
@@ -49,5 +50,6 @@ typedef enum
 - (IBAction)clickCopyFile:(id)sender;
 - (IBAction)clickDemo:(id)sender;
 - (IBAction)clickClearFile:(id)sender;
+- (IBAction)clickInstallApp:(id)sender;
 
 @end

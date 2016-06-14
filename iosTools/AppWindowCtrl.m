@@ -37,6 +37,7 @@
     if (self) {
         NSDictionary* appDict = [[NSDictionary alloc] initWithDictionary:dict];
         appArray = [[NSArray alloc] initWithArray:[appDict allValues]];
+        [appDict release],appDict = nil;
     }
     return self;
 }
