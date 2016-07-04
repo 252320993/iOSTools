@@ -20,6 +20,10 @@
 		CECF17E11D0135AC005BAC59 /* deviceinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CECF17DE1D0135AC005BAC59 /* deviceinfo.cpp */; };
 		CECF18161D0162C2005BAC59 /* AppWindowCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = CECF18141D0162C2005BAC59 /* AppWindowCtrl.m */; };
 		CECF18171D0162C2005BAC59 /* AppWindowCtrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECF18151D0162C2005BAC59 /* AppWindowCtrl.xib */; };
+		DA1327A71D2A6583003B918E /* symbolicatecrash in Resources */ = {isa = PBXBuildFile; fileRef = DA1327A61D2A6583003B918E /* symbolicatecrash */; };
+		DAC89B5D1D26405900F89433 /* CrashreportWinCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC89B5C1D26405900F89433 /* CrashreportWinCtrl.m */; };
+		DAC89B611D26568700F89433 /* CrashreportWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC89B601D26568700F89433 /* CrashreportWin.xib */; };
+		DAC89B641D26618100F89433 /* CrashFileInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC89B631D26618100F89433 /* CrashFileInfo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +54,12 @@
 		CECF18131D0162C2005BAC59 /* AppWindowCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppWindowCtrl.h; sourceTree = "<group>"; };
 		CECF18141D0162C2005BAC59 /* AppWindowCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppWindowCtrl.m; sourceTree = "<group>"; };
 		CECF18151D0162C2005BAC59 /* AppWindowCtrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppWindowCtrl.xib; sourceTree = "<group>"; };
+		DA1327A61D2A6583003B918E /* symbolicatecrash */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = symbolicatecrash; sourceTree = "<group>"; };
+		DAC89B5B1D26405900F89433 /* CrashreportWinCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashreportWinCtrl.h; sourceTree = "<group>"; };
+		DAC89B5C1D26405900F89433 /* CrashreportWinCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrashreportWinCtrl.m; sourceTree = "<group>"; };
+		DAC89B601D26568700F89433 /* CrashreportWin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrashreportWin.xib; sourceTree = "<group>"; };
+		DAC89B621D26618100F89433 /* CrashFileInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashFileInfo.h; sourceTree = "<group>"; };
+		DAC89B631D26618100F89433 /* CrashFileInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrashFileInfo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,14 +115,13 @@
 		CE6ACC061CFFE2620027A7EE /* iosTools */ = {
 			isa = PBXGroup;
 			children = (
+				DAC89B5A1D263F5F00F89433 /* CrashReport */,
+				DAC89B591D263F4500F89433 /* AppManger */,
 				CEF3A7161D0051F000B4F026 /* MobileDevice */,
 				CE6ACC121CFFE2620027A7EE /* ycwAppDelegate.h */,
 				CE6ACC131CFFE2620027A7EE /* ycwAppDelegate.mm */,
 				CE6ACC151CFFE2620027A7EE /* MainMenu.xib */,
 				CE6ACC071CFFE2620027A7EE /* Supporting Files */,
-				CECF18131D0162C2005BAC59 /* AppWindowCtrl.h */,
-				CECF18141D0162C2005BAC59 /* AppWindowCtrl.m */,
-				CECF18151D0162C2005BAC59 /* AppWindowCtrl.xib */,
 			);
 			path = iosTools;
 			sourceTree = "<group>";
@@ -120,6 +129,7 @@
 		CE6ACC071CFFE2620027A7EE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DA1327A61D2A6583003B918E /* symbolicatecrash */,
 				CE6ACC081CFFE2620027A7EE /* iosTools-Info.plist */,
 				CE6ACC091CFFE2620027A7EE /* InfoPlist.strings */,
 				CE6ACC0C1CFFE2620027A7EE /* main.m */,
@@ -144,6 +154,28 @@
 				CE40415A1D000F550044D850 /* MobileDevice.h */,
 			);
 			name = MobileDevice;
+			sourceTree = "<group>";
+		};
+		DAC89B591D263F4500F89433 /* AppManger */ = {
+			isa = PBXGroup;
+			children = (
+				CECF18131D0162C2005BAC59 /* AppWindowCtrl.h */,
+				CECF18141D0162C2005BAC59 /* AppWindowCtrl.m */,
+				CECF18151D0162C2005BAC59 /* AppWindowCtrl.xib */,
+			);
+			name = AppManger;
+			sourceTree = "<group>";
+		};
+		DAC89B5A1D263F5F00F89433 /* CrashReport */ = {
+			isa = PBXGroup;
+			children = (
+				DAC89B5B1D26405900F89433 /* CrashreportWinCtrl.h */,
+				DAC89B5C1D26405900F89433 /* CrashreportWinCtrl.m */,
+				DAC89B601D26568700F89433 /* CrashreportWin.xib */,
+				DAC89B621D26618100F89433 /* CrashFileInfo.h */,
+				DAC89B631D26618100F89433 /* CrashFileInfo.m */,
+			);
+			name = CrashReport;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,6 +234,8 @@
 				CE6ACC111CFFE2620027A7EE /* Credits.rtf in Resources */,
 				CE6ACC171CFFE2620027A7EE /* MainMenu.xib in Resources */,
 				CECF18171D0162C2005BAC59 /* AppWindowCtrl.xib in Resources */,
+				DAC89B611D26568700F89433 /* CrashreportWin.xib in Resources */,
+				DA1327A71D2A6583003B918E /* symbolicatecrash in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +253,8 @@
 				CECF18161D0162C2005BAC59 /* AppWindowCtrl.m in Sources */,
 				CE0FDCAB1D05299C00586C71 /* deviceservice.cpp in Sources */,
 				CE0FDCAE1D052AAD00586C71 /* filemanager.cpp in Sources */,
+				DAC89B5D1D26405900F89433 /* CrashreportWinCtrl.m in Sources */,
+				DAC89B641D26618100F89433 /* CrashFileInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,9 +314,9 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -304,8 +340,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -313,8 +349,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -326,7 +362,7 @@
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/iosTools\"";
 				INFOPLIST_FILE = "iosTools/iosTools-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -335,8 +371,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -348,7 +384,7 @@
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/iosTools\"";
 				INFOPLIST_FILE = "iosTools/iosTools-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

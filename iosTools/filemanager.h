@@ -47,7 +47,7 @@ class FileManager
     enum { MODE_READ=2, MODE_WRITE=3 };
     enum { AFC_NOT_EXIST = 8 };
 public:
-    explicit FileManager(DeviceService* deviceService);
+    explicit FileManager(DeviceService* deviceService, bool isCrashReport);
     explicit FileManager(afc_connection* conn);
     ~FileManager();
     

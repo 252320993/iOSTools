@@ -27,10 +27,17 @@ FileManager::FileManager(afc_connection* conn)
     }
 }
 
-FileManager::FileManager(DeviceService* deviceService)
+FileManager::FileManager(DeviceService* deviceService ,bool isCrashReport)
 {
     if (deviceService) {
-        if(deviceService->StartService("com.apple.afc") == 0)
+        string strCmd;
+        if (isCrashReport) {
+            strCmd = "com.apple.crashreportcopymobile";
+        }
+        else{
+            strCmd = "com.apple.afc";
+        }
+        if(deviceService->StartService(strCmd) == 0)
             _opencc = deviceService->GetOpenConnecton();
         else 
             _opencc = 0;
@@ -39,6 +46,7 @@ FileManager::FileManager(DeviceService* deviceService)
         _opencc = 0;
     }
 }
+
 
 FileManager::~FileManager()
 {
@@ -465,6 +473,7 @@ CFDictionaryRef FileManager::fileInfo(string filePath)
  		//CFDictionaryAddValue(fileProperties, keyRef, valRef);
         CFRelease(valRef);
     }
+    
 	AFCKeyValueClose(info);
 	
 	return fileProperties;
@@ -519,8 +528,9 @@ vector<string> FileManager::readDir(string dirPath)
     struct afc_directory *hAFCDir = 0;
     vector<string> listFiles;
     if (!_opencc) return listFiles;
-    
-	int ret = AFCDirectoryOpen(_opencc, (char*)dirPath.c_str(), &hAFCDir);
+    int ret = -1;
+    ret = AFCDirectoryOpen(_opencc, (char*)dirPath.c_str(), &hAFCDir);
+	
 	if (ret) 
     {
 		printf("AFCDirectoryOpen %s failed with %d\n", dirPath.c_str(), ret);

@@ -33,7 +33,6 @@ typedef enum
     IBOutlet NSTextField *_lblDeviceName;
     IBOutlet NSTextField *_lbliOSVersion;
     IBOutlet NSTextField *_lblDeviceUDID;
-    IBOutlet NSTextField *_lblDemoPath;
     IBOutlet NSTextField *_lblAppPath;
 
     mg_ios::IOSDevice* currentDevice;
@@ -42,14 +41,15 @@ typedef enum
     NSString *_Uiid;
     mg_ios::DeviceService*  fileSerice_;
     mg_ios::FileManager*    fileManager_;
+    struct afc_connection *_opencc;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 - (IBAction)clickListApps:(id)sender;
 - (IBAction)clickBackup:(id)sender;
 - (IBAction)clickCopyFile:(id)sender;
-- (IBAction)clickDemo:(id)sender;
 - (IBAction)clickClearFile:(id)sender;
 - (IBAction)clickInstallApp:(id)sender;
+- (IBAction)clickCrashReport:(id)sender;
 
 @end

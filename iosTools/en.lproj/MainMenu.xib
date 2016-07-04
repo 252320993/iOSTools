@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
@@ -651,13 +651,14 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="550">
-                        <rect key="frame" x="14" y="206" width="91" height="32"/>
+                    <button verticalHuggingPriority="750" id="550">
+                        <rect key="frame" x="25" y="230" width="91" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="App列表" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="551">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -666,59 +667,63 @@
                             <action selector="clickListApps:" target="494" id="554"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="556">
+                    <textField verticalHuggingPriority="750" id="556">
                         <rect key="frame" x="80" y="323" width="385" height="17"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="381" id="616"/>
-                        </constraints>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="N/A" id="557">
                             <font key="font" size="13" name="STHeitiSC-Light"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="560">
+                    <textField verticalHuggingPriority="750" id="560">
                         <rect key="frame" x="80" y="301" width="385" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="N/A" id="561">
                             <font key="font" size="13" name="STHeitiSC-Light"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="564">
+                    <textField verticalHuggingPriority="750" id="564">
                         <rect key="frame" x="80" y="279" width="385" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="N/A" id="565">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="589">
+                    <textField verticalHuggingPriority="750" id="589">
                         <rect key="frame" x="17" y="323" width="60" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="设备名称:" id="590">
                             <font key="font" size="13" name="STHeitiSC-Light"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="593">
+                    <textField verticalHuggingPriority="750" id="593">
                         <rect key="frame" x="17" y="301" width="60" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="系统版本:" id="594">
                             <font key="font" size="13" name="STHeitiSC-Light"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="598">
+                    <textField verticalHuggingPriority="750" id="598">
                         <rect key="frame" x="17" y="279" width="40" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="UDID:" id="599">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="636">
-                        <rect key="frame" x="122" y="206" width="66" height="32"/>
+                    <button verticalHuggingPriority="750" id="636">
+                        <rect key="frame" x="133" y="230" width="66" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="备份" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="637">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" size="13" name="STHeitiSC-Light"/>
@@ -727,8 +732,9 @@
                             <action selector="clickBackup:" target="494" id="640"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="641">
-                        <rect key="frame" x="204" y="206" width="118" height="32"/>
+                    <button verticalHuggingPriority="750" id="641">
+                        <rect key="frame" x="215" y="230" width="118" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="PhotoLibrary" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="642">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -737,37 +743,9 @@
                             <action selector="clickCopyFile:" target="494" id="647"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="651">
-                        <rect key="frame" x="337" y="206" width="129" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="117" id="657"/>
-                        </constraints>
-                        <buttonCell key="cell" type="push" title="整机擦除Demo" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="652">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" size="13" name="STHeitiSC-Light"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="clickDemo:" target="494" id="655"/>
-                        </connections>
-                    </button>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="667">
-                        <rect key="frame" x="82" y="249" width="381" height="22"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="668">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="673">
-                        <rect key="frame" x="7" y="252" width="65" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="demo地址" id="674">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XNo-hX-JRF">
-                        <rect key="frame" x="14" y="168" width="92" height="32"/>
+                    <button verticalHuggingPriority="750" id="XNo-hX-JRF">
+                        <rect key="frame" x="362" y="230" width="92" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="清除文件" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7I6-rc-GJ3">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" size="13" name=".PingFangSC-Regular"/>
@@ -776,24 +754,27 @@
                             <action selector="clickClearFile:" target="494" id="qqD-d9-WnW"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X1T-fO-8j5">
-                        <rect key="frame" x="82" y="133" width="381" height="22"/>
+                    <textField verticalHuggingPriority="750" id="X1T-fO-8j5">
+                        <rect key="frame" x="82" y="157" width="381" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="lPH-0L-tHH">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BGC-JM-JUD">
-                        <rect key="frame" x="16" y="136" width="56" height="17"/>
+                    <textField verticalHuggingPriority="750" id="BGC-JM-JUD">
+                        <rect key="frame" x="16" y="160" width="56" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="app路径" id="Ir0-NE-E0O">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1ut-y9-lRm">
-                        <rect key="frame" x="196" y="97" width="89" height="32"/>
+                    <button verticalHuggingPriority="750" id="1ut-y9-lRm">
+                        <rect key="frame" x="196" y="121" width="89" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="安装app" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bnr-4D-tLN">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" size="13" name=".PingFangSC-Regular"/>
@@ -802,42 +783,24 @@
                             <action selector="clickInstallApp:" target="494" id="eq5-uc-F5d"/>
                         </connections>
                     </button>
+                    <button verticalHuggingPriority="750" id="3Ck-Hh-B21">
+                        <rect key="frame" x="25" y="188" width="117" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="CrashReport" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DWo-4o-m4f">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickCrashReport:" target="494" id="Tth-mu-B8i"/>
+                        </connections>
+                    </button>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="550" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="20" symbolic="YES" id="555"/>
-                    <constraint firstItem="556" firstAttribute="top" secondItem="372" secondAttribute="top" constant="20" symbolic="YES" id="559"/>
-                    <constraint firstItem="593" firstAttribute="top" secondItem="372" secondAttribute="top" constant="42" id="596"/>
-                    <constraint firstItem="598" firstAttribute="top" secondItem="372" secondAttribute="top" constant="64" id="600"/>
-                    <constraint firstItem="598" firstAttribute="baseline" secondItem="564" secondAttribute="baseline" id="601"/>
-                    <constraint firstItem="593" firstAttribute="baseline" secondItem="560" secondAttribute="baseline" id="604"/>
-                    <constraint firstItem="589" firstAttribute="top" secondItem="372" secondAttribute="top" constant="20" symbolic="YES" id="608"/>
-                    <constraint firstItem="598" firstAttribute="leading" secondItem="593" secondAttribute="leading" id="613"/>
-                    <constraint firstItem="589" firstAttribute="leading" secondItem="593" secondAttribute="leading" id="622"/>
-                    <constraint firstItem="556" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="82" id="625"/>
-                    <constraint firstItem="560" firstAttribute="trailing" secondItem="556" secondAttribute="trailing" id="630"/>
-                    <constraint firstItem="560" firstAttribute="leading" secondItem="556" secondAttribute="leading" id="631"/>
-                    <constraint firstItem="564" firstAttribute="leading" secondItem="560" secondAttribute="leading" id="634"/>
-                    <constraint firstItem="564" firstAttribute="trailing" secondItem="560" secondAttribute="trailing" id="635"/>
-                    <constraint firstItem="636" firstAttribute="top" secondItem="550" secondAttribute="top" id="645"/>
-                    <constraint firstItem="636" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="128" id="648"/>
-                    <constraint firstItem="641" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="210" id="650"/>
-                    <constraint firstItem="641" firstAttribute="baseline" secondItem="550" secondAttribute="baseline" id="662"/>
-                    <constraint firstItem="651" firstAttribute="baseline" secondItem="636" secondAttribute="baseline" id="663"/>
-                    <constraint firstAttribute="trailing" secondItem="651" secondAttribute="trailing" constant="20" symbolic="YES" id="664"/>
-                    <constraint firstItem="550" firstAttribute="top" secondItem="372" secondAttribute="top" constant="126" id="666"/>
-                    <constraint firstItem="667" firstAttribute="leading" secondItem="564" secondAttribute="leading" id="669"/>
-                    <constraint firstItem="667" firstAttribute="top" secondItem="564" secondAttribute="bottom" constant="8" symbolic="YES" id="670"/>
-                    <constraint firstItem="667" firstAttribute="trailing" secondItem="564" secondAttribute="trailing" id="672"/>
-                    <constraint firstItem="589" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="19" id="678"/>
-                    <constraint firstItem="673" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="9" id="682"/>
-                    <constraint firstItem="673" firstAttribute="centerY" secondItem="667" secondAttribute="centerY" id="683"/>
-                </constraints>
             </view>
+            <point key="canvasLocation" x="297" y="346"/>
         </window>
         <customObject id="494" customClass="ycwAppDelegate">
             <connections>
                 <outlet property="_lblAppPath" destination="X1T-fO-8j5" id="ImN-HA-9PJ"/>
-                <outlet property="_lblDemoPath" destination="667" id="684"/>
                 <outlet property="_lblDeviceName" destination="556" id="581"/>
                 <outlet property="_lblDeviceUDID" destination="564" id="583"/>
                 <outlet property="_lbliOSVersion" destination="560" id="582"/>
