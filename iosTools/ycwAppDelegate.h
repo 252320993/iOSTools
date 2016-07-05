@@ -11,8 +11,6 @@
 #include "deviceservice.h"
 #include "filemanager.h"
 
-#define localBakcupPath @"/private/tmp/iosTools/"
-
 typedef enum
 {
     BU_Successful,                                        //Successful

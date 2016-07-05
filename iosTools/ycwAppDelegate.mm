@@ -68,6 +68,16 @@
     NSLog(@"\n%@\n",[NSString stringWithUTF8String:info.UniqueDeviceID.c_str()]);
 }
 
+-(void)showAlertWithText:(NSString *)strContent andTitle:(NSString *)strTitle{
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setInformativeText:strContent];
+    [alert setMessageText:strTitle];
+    [alert addButtonWithTitle:@"OK"];
+    [alert runModal];
+    [alert release],alert = nil;
+    
+}
+
 #pragma mark - 按钮事件
 - (IBAction)clickListApps:(id)sender {
     CFDictionaryRef dictRef = currentDevice->getAppLists();
@@ -109,14 +119,12 @@
         int retCode = [self execBackup:argumArray];
         if (retCode == 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSAlert *alert = [NSAlert alertWithMessageText:@"Success!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Backup Success, path is %@",savePath];
-                [alert runModal];
+                [self showAlertWithText:[NSString stringWithFormat:@"Backup Success, path is %@",savePath] andTitle:@"Success!"];
             });
         }
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSAlert *alert = [NSAlert alertWithMessageText:@"Failed!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Backup Failed!!!"];
-                [alert runModal];
+                [self showAlertWithText:@"Backup Failed!!!" andTitle:@"Failed!"];
             });
         }
     });
@@ -155,14 +163,12 @@
         
         if (retcode) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSAlert *alert = [NSAlert alertWithMessageText:@"Success" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Copy PhotoLibrary Success, path is %@",strPhotoLibraryPath];
-                [alert runModal];
+                [self showAlertWithText:[NSString stringWithFormat:@"Copy PhotoLibrary Success, path is %@",strPhotoLibraryPath] andTitle:@"Success!"];
             });
         }
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSAlert *alert = [NSAlert alertWithMessageText:@"Failed!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Copy Failed!!!"];
-                [alert runModal];
+                [self showAlertWithText:@"Copy Failed!!!" andTitle:@"Failed"];
             });
         }
     });
@@ -178,21 +184,18 @@
             
             if (ret) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    NSAlert *alert = [NSAlert alertWithMessageText:@"Success!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Delete Success!!!"];
-                    [alert runModal];
+                    [self showAlertWithText:@"Delete Success!!!" andTitle:@"Success!"];
                 });
             }
             else{
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    NSAlert *alert = [NSAlert alertWithMessageText:@"Failed!!!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@",error.description];
-                    [alert runModal];
+                    [self showAlertWithText:[NSString stringWithFormat:@"%@",error.description] andTitle:@"Failed!"];
                 });
             }
         }
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSAlert *alert = [NSAlert alertWithMessageText:@"Alert!!!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"File No Exits"];
-                [alert runModal];
+                [self showAlertWithText:@"File No Exits" andTitle:@"Failed!"];
             });
         }
     });
@@ -377,7 +380,7 @@
     }
 }
 
-- (BOOL)getFileFromDevice:(NSString*)localPath  path:(NSString *)strDevicePath
+- (BOOL)getFileFromDevice:(NSString*)localPath  DevicePath:(NSString *)strDevicePath
 {
     
     NSString* dstPath = localPath;
@@ -414,7 +417,7 @@
             [self getDirFromDevice:destFile srcPath:srcFile];
         }
         else{
-            retcode &= [self getFileFromDevice:destFile path:srcFile];
+            retcode &= [self getFileFromDevice:destFile DevicePath:srcFile];
         }
     }
     return retcode;
@@ -442,25 +445,44 @@
 }
 
 -(BOOL)copyCrashReportToDesFolder:(NSString*)destFolder{
+    
         NSFileManager *fm = [NSFileManager defaultManager];
-        NSString *strCrashReportPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"CrashReport/"];
-        if ([fm fileExistsAtPath:strCrashReportPath]) {
-            [fm removeItemAtPath:strCrashReportPath error:nil];
+        if ([fm fileExistsAtPath:destFolder]) {
+            [fm removeItemAtPath:destFolder error:nil];
         }
-        [fm createDirectoryAtPath:strCrashReportPath withIntermediateDirectories:YES attributes:nil error:nil];
+        [fm createDirectoryAtPath:destFolder withIntermediateDirectories:YES attributes:nil error:nil];
+    
         NSString *reportPath = @"/";
-        delete fileManager_;fileManager_=NULL;
+        delete fileManager_;fileManager_ = NULL;
         [self openCrashReportCopyService:currentDevice];
         BOOL retcode = NO;
         if (fileManager_ && (fileManager_->isServiceOk()))
         {
-            retcode = [self getDirFromDevice:strCrashReportPath srcPath:reportPath];
+            retcode = [self getDirFromDevice:destFolder srcPath:reportPath];
         }
         else{
             retcode = NO;
         }
     
     return retcode;
+}
+
+-(BOOL)copyCrashFileFromPath:(NSString *)strSrcPath toDesFolder:(NSString *)strDestFolder{
+    
+    BOOL bRet = NO;
+    NSString *strDestFile = [strDestFolder stringByAppendingString:[strSrcPath lastPathComponent]];
+    
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    [fm createDirectoryAtPath:strDestFolder withIntermediateDirectories:YES attributes:nil error:nil];
+    if ([fm fileExistsAtPath:strDestFile]) {
+        [fm removeItemAtPath:strDestFile error:nil];
+    }
+    if (fileManager_ && (fileManager_->isServiceOk())) {
+        bRet = [self getFileFromDevice:strDestFile DevicePath:strSrcPath];
+    }
+    
+    return bRet;
 }
 
 -(BOOL)readCrashReportFileListFromPath:(NSString *)strFolderPath toArray:(NSMutableArray *)crashFileArray{
@@ -479,7 +501,7 @@
             }
             else{
                 CrashFileInfo *fileinfo = [[CrashFileInfo alloc] initWithStrInfo:[NSString stringWithUTF8String:fileLists[i].c_str()]];
-                fileinfo.filePath = srcFile;
+                fileinfo.deviceFilePath = srcFile;
                 [crashFileArray addObject:fileinfo];
                 [fileinfo release],fileinfo = nil;
             }
@@ -493,21 +515,23 @@
 
 -(void)copyAllCrashreportFile{
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-       bool ret = [self copyCrashReportToDesFolder:nil];
+        NSString *strCrashReportPath = [NSString stringWithFormat:@"%@%@",localBakcupPath,@"CrashReport/"];
+       bool ret = [self copyCrashReportToDesFolder:strCrashReportPath];
         if (ret) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSAlert *alert = [NSAlert alertWithMessageText:@"success" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"copy success!"];
-                [alert runModal];
+                [self showAlertWithText:@"copy success!" andTitle:@"Success!"];
             });
         }
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSAlert *alert = [NSAlert alertWithMessageText:@"failed!" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Copy failed!"];
-                [alert runModal];
+                [self showAlertWithText:@"Copy failed!" andTitle:@"Failed!"];
             });
         }
     });
-    
+}
+
+-(void)copySingleCrashFile:(NSString *)strCrashFilePath toDesFolder:(NSString *)strDestFolder{
+    [self copyCrashFileFromPath:strCrashFilePath toDesFolder:strDestFolder];
 }
 
 -(NSString *)readCrashReportfileContentFromPath:(NSString *)strPath{

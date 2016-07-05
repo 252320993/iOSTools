@@ -11,12 +11,14 @@
 @interface CrashFileInfo : NSObject{
     NSString *_fileName;
     NSString *_crashTime;
-    NSString *_filePath;
+    NSString *_deviceFilePath;
+    NSString *_localFilePath;
 }
 
 @property (copy, nonatomic) NSString *fileName;
 @property (copy, nonatomic) NSString *crashTime;
-@property (copy, nonatomic) NSString *filePath;
+@property (copy, nonatomic) NSString *deviceFilePath;
+@property (copy, nonatomic) NSString *localFilePath;
 
 -(instancetype)initWithStrInfo:(NSString *)fileInfo;
 

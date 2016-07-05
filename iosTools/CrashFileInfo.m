@@ -11,7 +11,8 @@
 @implementation CrashFileInfo
 @synthesize crashTime = _crashTime;
 @synthesize fileName = _fileName;
-@synthesize filePath = _filePath;
+@synthesize deviceFilePath = _deviceFilePath;
+@synthesize localFilePath = _localFilePath;
 
 -(instancetype)initWithStrInfo:(NSString *)fileInfo{
     self = [super init];
